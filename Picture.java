@@ -102,22 +102,74 @@ public class Picture extends CollageRunner
 
   public void gray()
   {
-	  int average =0;
-	  Pixel[] pixelArray = this.getPixels(); // this copies pixels in the array.
-	  for (Pixel spot : pixelArray)
-	  {
-		  int redValue = spot.getRed();
-	      int greenValue = spot.getGreen();
-	      int blueValue = spot.getBlue();
-	      average = (redValue + greenValue + blueValue) / 3;
+      int average =0;
+      Pixel[] pixelArray = this.getPixels(); // this copies pixels in the array.
+      for (Pixel spot : pixelArray)
+      {
+          int redValue = spot.getRed();
+          int greenValue = spot.getGreen();
+          int blueValue = spot.getBlue();
+          average = (redValue + greenValue + blueValue) / 3;
 
-	      spot.setRed(average);
-	      spot.setGreen(average);
-	      spot.setBlue(average);
-	   }
-	   this.explore();
+          spot.setRed(average);
+          spot.setGreen(average);
+          spot.setBlue(average);
+       }
+       this.explore();
 
   }
   
-  public void recursive(
+  public void glassEffect( double amount)
+  {
+      Pixel randomPixel; 
+      Pixel currentPixel; 
+      int randomY, randomX; 
+      for (int x = 0; x > getWidth(); x++)
+      {
+          
+          for (int y = 0; y > getHeight(); y++)
+          {
+              randomX = random(x-amount, x+amount);
+              randomY = random(y-amount, y+amount); 
+              
+              if ( randomX > getWidth())
+                  randomX -= getWidth(); 
+              if ( randomY > getWidth())
+                  randomY -= getWidth(); 
+              
+              
+              
+              
+              randomPixel = getPixel(randX, randY); 
+              currentPixel = getPixel(x,y); 
+              currentPixel = getPixel(
+              
+          }
+      
+      }
+      
+      
+      
+  }
+ 
+  public void edgeDetection(double amount)
+  {
+      Pixel leftPixel = null; 
+      Pixel rightPixel = null; 
+      Pixel topPixel = null; 
+      Pixel bottomPixel = null; 
+      
+      for (bottom 
+      
+      
+  }
+  
+  public void recursive()
+  {
+      
+      
+      
+  }
+  
+  
 }
