@@ -13,7 +13,7 @@ public class CollageRunner
         Picture picture1 = new Picture ("images/BatmanOriginal.jpeg"); 
         Picture new1 = new Picture ("images/Image_BatmanNew1.jpeg");
         
-        Picel [] pixels; 
+        Pixel[] pixels; 
         picture1.explore(); 
         
         new1.explore(); 

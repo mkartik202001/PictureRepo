@@ -118,7 +118,7 @@ public class Picture extends CollageRunner
        this.explore();
 
   }
-  
+  /*
   public void glassEffect( double amount)
   {
       Pixel randomPixel; 
@@ -126,7 +126,6 @@ public class Picture extends CollageRunner
       int randomY, randomX; 
       for (int x = 0; x > getWidth(); x++)
       {
-          
           for (int y = 0; y > getHeight(); y++)
           {
               randomX = random(x-amount, x+amount);
@@ -134,41 +133,74 @@ public class Picture extends CollageRunner
               
               if ( randomX > getWidth())
                   randomX -= getWidth(); 
-              if ( randomY > getWidth())
-                  randomY -= getWidth(); 
-              
-              
-              
-              
-              randomPixel = getPixel(randX, randY); 
+              if ( randomX > getWidth())
+                  randomY -= getHeight(); 
+              if ( randomY <0)
+                  randomY += getWidth();
+              if ( randomY >0)
+                  randomY += getHeight(); 
+                   
+             
+              randomPixel = getPixel(randomX, randomY); 
               currentPixel = getPixel(x,y); 
               currentPixel = getPixel(
               
           }
-      
       }
       
       
       
   }
- 
+*/ 
   public void edgeDetection(double amount)
   {
-      Pixel leftPixel = null; 
-      Pixel rightPixel = null; 
-      Pixel topPixel = null; 
-      Pixel bottomPixel = null; 
-      
-      for (bottom 
-      
-      
+      Pixel leftPixel = null;
+      Pixel rightPixel = null;
+      Pixel bottomPixel=null;
+      Pixel[][] pixels = this.getPixels2D();
+      Color rightColor = null;
+      boolean black;
+      for (int row = 0; row < pixels.length; row++)
+      {
+          for (int col = 0; col < pixels[0].length; col++)
+          {
+              black=false;
+              leftPixel = pixels[row][col];
+              if (col<pixels[0].length-1)
+              {
+                  rightPixel = pixels[row][col+1];
+                  rightColor = rightPixel.getColor();
+                  if (leftPixel.colorDistance(rightColor) > edgeDist)
+                  black=true;
+              }
+              if (row<pixels.length-1)
+              {
+                  bottomPixel =pixels[row+1][col];
+                  if (leftPixel.colorDistance(bottomPixel.getColor())>edgeDist)
+                        black=true;
+
+              }
+              if (black)
+                    leftPixel.setColor(Color.BLACK);
+              else
+                    leftPixel.setColor(Color.WHITE);
+          }
+      }
   }
   
-  public void recursive()
+  public void swapBackground(Picture originalBackground, Picture newBackground, double threshold)
   {
+      //int currentPixel , oldPixel; 
       
-      
-      
+      for (Pixel stuff : pixel)
+      {
+          int originalBackground = stuff.getRed(); 
+          
+          
+      }
+ 
+  
+  
   }
   
   
