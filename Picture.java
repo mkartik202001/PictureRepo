@@ -187,7 +187,7 @@ public class Picture extends CollageRunner
           }
       }
   }
-  
+  /*
   public void swapBackground(Picture originalBackground, Picture newBackground, double threshold)
   {
       //int currentPixel , oldPixel; 
@@ -202,6 +202,13 @@ public class Picture extends CollageRunner
   
   
   }
-  
+  */
+  public void recursion(int counter)
+  {
+      Pixel sourcePixel = null; 
+      Pixel targetPixel = null; 
+      
+      for (int sourceX = 0, targetX = 0,  
+  }
   
 }
