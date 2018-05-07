@@ -15,13 +15,13 @@ import java.util.List; // resolves problem with java.awt.List and java.util.List
  * Copyright Georgia Institute of Technology 2004-2005
  * @author Barbara Ericson ericson@cc.gatech.edu
  */
-public class MainPicture extends SimplePicture
+public class Picture extends SimplePicture
 {
   ///////////////////// constructors //////////////////////////////////
   /**
    * Constructor that takes no arguments
    */
-  public MainPicture ()
+  public Picture()
   {
     /* not needed but use it to show students the implicit call to super()
      * child constructors always call a parent constructor
@@ -33,7 +33,7 @@ public class MainPicture extends SimplePicture
    * Constructor that takes a file name and creates the picture
    * @param fileName the name of the file to create the picture from
    */
-  public MainPicture(String fileName)
+  public Picture(String fileName)
   {
     // let the parent class handle this fileName
     super(fileName);
@@ -44,7 +44,7 @@ public class MainPicture extends SimplePicture
    * @param width the width of the desired picture
    * @param height the height of the desired picture
    */
-  public MainPicture(int width, int height)
+  public Picture(int width, int height)
   {
     // let the parent class handle this width and height
     super(width,height);
@@ -54,7 +54,7 @@ public class MainPicture extends SimplePicture
    * Constructor that takes a picture and creates a
    * copy of that picture
    */
-  public MainPicture(MainPicture copyPicture)
+  public Picture(Picture copyPicture)
   {
     // let the parent class do the copy
     super(copyPicture);
@@ -64,7 +64,7 @@ public class MainPicture extends SimplePicture
    * Constructor that takes a buffered image
    * @param image the buffered image to use
    */
-  public MainPicture(BufferedImage image)
+  public Picture(BufferedImage image)
   {
     super(image);
   }
@@ -109,7 +109,7 @@ public class MainPicture extends SimplePicture
   public void copyKatie(/*"sourceFile*"*/) //better way to do the first line of gray
   {
       String sourceFile = ("images/KatieFancy.jpg");
-      MainPicture sourcePicture = new MainPicture(sourceFile);
+      Picture sourcePicture = new Picture(sourceFile);
 
       Pixel sourcePixel = null; //what am I taking from
       Pixel targetPixel = null; //where I am putting it on
@@ -134,9 +134,10 @@ public class MainPicture extends SimplePicture
   public static void main(String[] args)
   {
      String fileName = FileChooser.pickAFile();
-     MainPicture pictObj = new MainPicture(fileName);
+     Picture pictObj = new Picture(fileName);
      pictObj.explore();
   }
+
  
  
    public void mirrorVertical()
@@ -158,7 +159,8 @@ public class MainPicture extends SimplePicture
            }
         }
    }
-   
+}
+   /*
     public void recursiveCall(int h, int w)
    {
      int height = h;
