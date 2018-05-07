@@ -8,11 +8,6 @@ import java.util.*;
 import java.util.List; // resolves problem with java.awt.List and java.util.List
 
 /**
- * Original Picture Size : 748 X 421
- * Canvas size should be: 2244 X 842
- */
-
-/**
  * A class that represents a picture.  This class inherits from
  * SimplePicture and allows the student to add functionality to
  * the Picture class.
@@ -20,14 +15,13 @@ import java.util.List; // resolves problem with java.awt.List and java.util.List
  * Copyright Georgia Institute of Technology 2004-2005
  * @author Barbara Ericson ericson@cc.gatech.edu
  */
-public class Picture extends CollageRunner
+public class MainPicture extends SimplePicture
 {
   ///////////////////// constructors //////////////////////////////////
-
   /**
    * Constructor that takes no arguments
    */
-  public void TestPicture17 ()
+  public MainPicture ()
   {
     /* not needed but use it to show students the implicit call to super()
      * child constructors always call a parent constructor
@@ -39,7 +33,7 @@ public class Picture extends CollageRunner
    * Constructor that takes a file name and creates the picture
    * @param fileName the name of the file to create the picture from
    */
-  public Picture(String fileName)
+  public MainPicture(String fileName)
   {
     // let the parent class handle this fileName
     super(fileName);
@@ -50,7 +44,7 @@ public class Picture extends CollageRunner
    * @param width the width of the desired picture
    * @param height the height of the desired picture
    */
-  public Picture(int width, int height)
+  public MainPicture(int width, int height)
   {
     // let the parent class handle this width and height
     super(width,height);
@@ -60,7 +54,7 @@ public class Picture extends CollageRunner
    * Constructor that takes a picture and creates a
    * copy of that picture
    */
-  public Picture(Picture copyPicture)
+  public MainPicture(MainPicture copyPicture)
   {
     // let the parent class do the copy
     super(copyPicture);
@@ -70,7 +64,7 @@ public class Picture extends CollageRunner
    * Constructor that takes a buffered image
    * @param image the buffered image to use
    */
-  public Picture(BufferedImage image)
+  public MainPicture(BufferedImage image)
   {
     super(image);
   }
@@ -91,34 +85,122 @@ public class Picture extends CollageRunner
 
   }
 
+  public void gray()
+  {
+      Pixel[] pixelArray = this.getPixels(); //might not be the best idea if you have a lot of pixels
+      Pixel pixel = null;
+      int intensity = 0;
+      int red, blue, green;
+      int avg;
+      for (Pixel spot: pixelArray)
+      {
+        red = spot.getRed();
+        blue = spot.getBlue();
+        green = spot.getGreen();
+        avg = (red + blue + green)/3;
+        spot.setRed(avg);
+        spot.setBlue(avg);
+        spot.setGreen(avg);
+      }
+      //pixe.explore();
+
+  }
+
+  public void copyKatie(/*"sourceFile*"*/) //better way to do the first line of gray
+  {
+      String sourceFile = ("images/KatieFancy.jpg");
+      MainPicture sourcePicture = new MainPicture(sourceFile);
+
+      Pixel sourcePixel = null; //what am I taking from
+      Pixel targetPixel = null; //where I am putting it on
+
+      //width of source must be = or < the canvas I am copy to
+      //loop through the columns
+      for (int sourceX = 0, targetX = 0; sourceX < sourcePicture.getWidth(); sourceX++, targetX++)
+      {
+          //loop through the rows
+          for (int sourceY = 0, targetY = 0; sourceY < sourcePicture.getHeight(); sourceY++, targetY++)
+          {
+              //set the target pixel color to the source pixel color
+              sourcePixel = sourcePicture.getPixel(sourceX, sourceY);
+              targetPixel = this.getPixel(targetX, targetY);
+              targetPixel.setColor(sourcePixel.getColor());
+          }
+      }
+
+  }
+
+
   public static void main(String[] args)
   {
      String fileName = FileChooser.pickAFile();
-     Picture pictObj = new Picture(fileName);
+     MainPicture pictObj = new MainPicture(fileName);
      pictObj.explore();
   }
+ 
+ 
+   public void mirrorVertical()
+   {
+       int mirrorPoint = (this.getWidth())/2;
+       int width = this.getWidth();
+       Pixel leftPixel = null;
+       Pixel rightPixel = null;
+       
+       //loop throw all the rows
+       for (int y = 0; y < getHeight(); y++) //column major
+       {
+           //loop from 0 to the middle (mirror point) 
+           for (int x =0; x < mirrorPoint; x++)
+           {
+               leftPixel = getPixel(x,y);
+               rightPixel = getPixel(width - 1- x, y); //pixels are in an array so width - 1
+               rightPixel.setColor(leftPixel.getColor());
+           }
+        }
+   }
+   
+    public void recursiveCall(int h, int w)
+   {
+     int height = h;
+     int width = w;
+     MainPicture sourcePicture = this;
 
-  // --------------------My Methords-------------------------
+     Pixel sourcePixel = null; //what am I taking from
+     Pixel targetPixel = null; //where I am putting it on
+     
+     //width of source must be = or < the canvas I am copy to
+     //loop through the columns
+     for (int sourceX = 0, targetX = 0; sourceX < sourcePicture.getWidth(); sourceX+=2, targetX++)
+     {
+         //loop through the rows
+         for (int sourceY = 0, targetY = 0; sourceY < sourcePicture.getHeight(); sourceY+=2, targetY++)
+         {
+             //set the target pixel color to the source pixel color
+             sourcePixel = sourcePicture.getPixel(sourceX, sourceY);
+             targetPixel = this.getPixel(targetX, targetY);
+             targetPixel.setColor(sourcePixel.getColor());
+         }
+     }
+     
+     if (height == 0 && width == 0)
+     {
+         height = 0;
+         width = 0;
+     }
+     else
+     {
+         recursiveCall(height/2, width/2);
+     }
+    }
+    
+    
+}// ends the main class
 
-  public void gray()
-  {
-      int average =0;
-      Pixel[] pixelArray = this.getPixels(); // this copies pixels in the array.
-      for (Pixel spot : pixelArray)
-      {
-          int redValue = spot.getRed();
-          int greenValue = spot.getGreen();
-          int blueValue = spot.getBlue();
-          average = (redValue + greenValue + blueValue) / 3;
+  
+  
+  
+ /*
 
-          spot.setRed(average);
-          spot.setGreen(average);
-          spot.setBlue(average);
-       }
-       this.explore();
-
-  }
-  /*
   public void glassEffect( double amount)
   {
       Pixel randomPixel; 
@@ -151,7 +233,7 @@ public class Picture extends CollageRunner
       
       
   }
-*/ 
+ 
   public void edgeDetection(double amount)
   {
       Pixel leftPixel = null;
@@ -187,7 +269,7 @@ public class Picture extends CollageRunner
           }
       }
   }
-  /*
+  
   public void swapBackground(Picture originalBackground, Picture newBackground, double threshold)
   {
       //int currentPixel , oldPixel; 
@@ -202,13 +284,14 @@ public class Picture extends CollageRunner
   
   
   }
-  */
+  
   public void recursion(int counter)
   {
       Pixel sourcePixel = null; 
       Pixel targetPixel = null; 
       
-      for (int sourceX = 0, targetX = 0,  
-  }
+      for (int sourceX = 0, targetX = 0,  )
   
-}
+   }
+   
+*/
