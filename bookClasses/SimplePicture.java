@@ -342,6 +342,24 @@ public class SimplePicture implements DigitalPicture
     
    return pixelArray;
  }
+
+ /**
+  * Method to get a two-dimensional array of Pixels for this simple picture
+  * @return a two-dimensional array of Pixel objects in row-major order.
+  */
+ public Pixel[][] getPixels2D()
+ {
+   int width = getWidth();
+   int height = getHeight();
+   Pixel[][] pixelArray = new Pixel[height][width];
+   
+   // loop through height rows from top to bottom
+   for (int row = 0; row < height; row++) 
+     for (int col = 0; col < width; col++) 
+       pixelArray[row][col] = new Pixel(this,col,row);
+    
+   return pixelArray;
+ }
  
 
  

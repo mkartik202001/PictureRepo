@@ -1,4 +1,5 @@
 // Kartik Maheshwari
+// Picture Project
 import java.awt.*;
 import java.awt.font.*;
 import java.awt.geom.*;
@@ -6,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.text.*;
 import java.util.*;
 import java.util.List; // resolves problem with java.awt.List and java.util.List
-
+import java.io.*; 
 /**
  * A class that represents a picture.  This class inherits from
  * SimplePicture and allows the student to add functionality to
@@ -84,7 +85,9 @@ public class Picture extends SimplePicture
     return output;
 
   }
-
+  /**
+   * Method for turning the image in gray 
+   */
   public void gray()
   {
       Pixel[] pixelArray = this.getPixels(); //might not be the best idea if you have a lot of pixels
@@ -139,7 +142,9 @@ public class Picture extends SimplePicture
   }
 
  
- 
+   /**
+    * A method that mirrors the image vertically 
+    */
    public void mirrorVertical()
    {
        int mirrorPoint = (this.getWidth())/2;
@@ -159,13 +164,15 @@ public class Picture extends SimplePicture
            }
         }
    }
-}
-   /*
+   /**
+    * Method that recursively reduces the height and width of the image by a cetain 
+    * interger value that is specified in the runner main class
+    */  
     public void recursiveCall(int h, int w)
    {
      int height = h;
      int width = w;
-     MainPicture sourcePicture = this;
+     Picture sourcePicture = this;
 
      Pixel sourcePixel = null; //what am I taking from
      Pixel targetPixel = null; //where I am putting it on
@@ -194,17 +201,158 @@ public class Picture extends SimplePicture
          recursiveCall(height/2, width/2);
      }
     }
+    /**
+     * Nothing specific alteration with the RGB values of the image, but make them 
+     * look burned and dark as the RGB values in the image are divided with sertain 
+     * constants. 
+     */
+    public void funColor()
+    {
+     Pixel[] pixelArray = this.getPixels();
+      for (Pixel spot: pixelArray)
+     {
+         int red = Math.abs(spot.getRed());
+         int blue = Math.abs(spot.getBlue());
+         int green = Math.abs(spot.getGreen());
+         
+         if (((red < blue) && (red > green)) || ((red < green) && (red > blue)))
+         {
+             spot.setRed(red/5);
+             spot.setBlue(blue/5);
+             spot.setGreen(green/5);
+         }
+         else if (((blue < red) && (blue > green)) || ((blue < green) && (blue > red)))
+         {
+             spot.setRed(red/3);
+             spot.setBlue(blue/2);
+             spot.setGreen(green/1);
+         }
+         else 
+         {
+             spot.setRed(red/2);
+             spot.setBlue(blue/2);
+             spot.setGreen(green/2);
+         }
+     }
+    }
+    /**
+     * Method that flip the parent image. 
+     */
+     public void flip()
+    {
+     int height = this.getHeight() - 1; //if  X or Y is 0, then there's going to be an error
+     int width = this.getWidth() - 1;
+     Pixel[] pixelArray = this.getPixels(); //might not be the best idea if you have a lot of pixels
+     Picture sourcePicture = this;
+     Pixel sourcePixel = null;
+     Pixel targetPixel = null;
+     Color temp = null;
+     for (int sourceX = 0, targetX = 0; sourceX < sourcePicture.getWidth()/2; sourceX++, targetX++)
+     {
+         //loop through the rows
+         for (int sourceY = 0, targetY = 0; sourceY < sourcePicture.getHeight(); sourceY++, targetY++) //can't have both values divided by 2 because 2 quadrants don't 
+                                                                                                          //change then
+         {
+             sourcePixel = sourcePicture.getPixel(sourceX, sourceY);
+             targetPixel = this.getPixel(width - sourceX, height - sourceY);
+             temp = targetPixel.getColor();
+             targetPixel.setColor(sourcePixel.getColor());
+             sourcePixel.setColor(temp);
+         }
+     }
+     
+    }
     
     
-}// ends the main class
+    /**
+     * An image that overlaps the parent image. 
+     */
+     public void overlapJoker()
+ {
+     String sourceFile = ("images/Joker.png");
+      Picture sourcePicture = new Picture(sourceFile);
+
+      Pixel sourcePixel = null; 
+      Pixel targetPixel = null; 
+
+      //width of source must be = or < the canvas I am copy to
+      //loop through the columns
+      for (int sourceX = 0, targetX = 0; sourceX < sourcePicture.getWidth(); sourceX++, targetX++)
+      {
+          //loop through the rows
+          for (int sourceY = 0, targetY = 0; sourceY < sourcePicture.getHeight(); sourceY++, targetY++)
+          {
+              //set the target pixel color to the source pixel color
+              sourcePixel = sourcePicture.getPixel(sourceX, sourceY);
+              targetPixel = this.getPixel(targetX, targetY);
+              targetPixel.setColor(sourcePixel.getColor());
+              
+              sourcePixel = sourcePicture.getPixel(sourceX, sourceY);
+              targetPixel = this.getPixel(targetX, targetY);
+              targetPixel.setColor(sourcePixel.getColor());
+           }
+
+        }
+    }
+    
+   /**
+    * Method that mirrors the image recursively by copying the bottom pixels 
+    * to the top
+    */ 
+       public void mirrorHorizontalBottomToTop()
+       {
+       int height = this.getHeight();
+       int mirrorPoint = height/2;
+       Pixel topPixel = null;
+       Pixel bottomPixel = null;
+       
+       for (int x = 0; x < this.getWidth(); x++)
+       {
+           for (int y =0; y < mirrorPoint; y++)
+           {
+               topPixel = getPixel(x, y);
+               bottomPixel = getPixel(x, height - 1 - y);
+               topPixel.setColor(bottomPixel.getColor());
+           }
+       }
+   }
+      
+}// end of main
+    
+ 
+
+
+    
+    
+
 
   
   
   
  /*
 
-  public void glassEffect( double amount)
+  
+  public void swapBackground(Picture originalBackground, Picture newBackground, double threshold)
   {
+      //int currentPixel , oldPixel; 
+      
+      for (Pixel stuff : pixel)
+      {
+          int originalBackground = stuff.getRed(); 
+          
+          
+      }
+ 
+  
+  
+  }
+  
+
+   
+   
+   
+   public void glassEffect( double amount)
+     {
       Pixel randomPixel; 
       Pixel currentPixel; 
       int randomY, randomX; 
@@ -231,69 +379,6 @@ public class Picture extends SimplePicture
               
           }
       }
-      
-      
-      
-  }
- 
-  public void edgeDetection(double amount)
-  {
-      Pixel leftPixel = null;
-      Pixel rightPixel = null;
-      Pixel bottomPixel=null;
-      Pixel[][] pixels = this.getPixels2D();
-      Color rightColor = null;
-      boolean black;
-      for (int row = 0; row < pixels.length; row++)
-      {
-          for (int col = 0; col < pixels[0].length; col++)
-          {
-              black=false;
-              leftPixel = pixels[row][col];
-              if (col<pixels[0].length-1)
-              {
-                  rightPixel = pixels[row][col+1];
-                  rightColor = rightPixel.getColor();
-                  if (leftPixel.colorDistance(rightColor) > edgeDist)
-                  black=true;
-              }
-              if (row<pixels.length-1)
-              {
-                  bottomPixel =pixels[row+1][col];
-                  if (leftPixel.colorDistance(bottomPixel.getColor())>edgeDist)
-                        black=true;
-
-              }
-              if (black)
-                    leftPixel.setColor(Color.BLACK);
-              else
-                    leftPixel.setColor(Color.WHITE);
-          }
-      }
-  }
-  
-  public void swapBackground(Picture originalBackground, Picture newBackground, double threshold)
-  {
-      //int currentPixel , oldPixel; 
-      
-      for (Pixel stuff : pixel)
-      {
-          int originalBackground = stuff.getRed(); 
-          
-          
-      }
- 
-  
-  
-  }
-  
-  public void recursion(int counter)
-  {
-      Pixel sourcePixel = null; 
-      Pixel targetPixel = null; 
-      
-      for (int sourceX = 0, targetX = 0,  )
-  
-   }
+     
    
 */
